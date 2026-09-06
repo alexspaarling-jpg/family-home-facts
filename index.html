@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Family Fun Facts</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{font-family:"Trebuchet MS",Arial,sans-serif;background:transparent;display:flex;align-items:center;justify-content:center}
+#app{width:min(850px,88vw);min-height:58vh;padding:55px 60px 48px;background:#fff7a8;border-radius:4px;box-shadow:7px 10px 0 rgba(0,0,0,.08),0 16px 35px rgba(0,0,0,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;transform:rotate(-1deg)}
+#app:before{content:"";position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(1deg);width:150px;height:34px;background:rgba(255,205,90,.72);box-shadow:0 2px 5px rgba(0,0,0,.08)}
+#emoji{font-size:72px;margin-top:4px}
+#label{margin-top:8px;font-size:18px;font-weight:900;letter-spacing:3px;opacity:.5}
+#fact{margin-top:22px;font-size:clamp(28px,4vw,56px);line-height:1.16;font-weight:900;max-width:760px}
+#footer{margin-top:28px;font-size:15px;font-weight:700;opacity:.4}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="emoji">🧠</div>
+  <div id="label">FAMILY BRAIN SNACK</div>
+  <div id="fact">Loading a weird fact...</div>
+  <div id="footer">A new fact every 15 minutes</div>
+</div>
+<script>
+const facts = [
+["🐙","ANIMAL FACT","Octopuses have three hearts."],
+["🦩","ANIMAL FACT","A group of flamingos is called a flamboyance."],
+["🐘","ANIMAL FACT","Elephants cannot jump."],
+["🦈","ANIMAL FACT","Sharks existed before trees appeared on Earth."],
+["🦥","ANIMAL FACT","Sloths can hold their breath for surprisingly long periods."],
+["🦐","ANIMAL FACT","A shrimp's heart is located in its head area."],
+["🐌","ANIMAL FACT","Some snails can sleep for very long periods."],
+["🐄","ANIMAL FACT","Cows can form close friendships with other cows."],
+["🦘","ANIMAL FACT","Kangaroos cannot walk backward easily because of their body shape and tail."],
+["🐦","ANIMAL FACT","Some birds can see ultraviolet light."],
+["🐢","ANIMAL FACT","Some turtles can absorb oxygen through special tissues near their rear end."],
+["🐝","ANIMAL FACT","Honeybees can communicate the location of food using a dance."],
+["🦉","ANIMAL FACT","Owls cannot move their eyes around like humans do."],
+["🐬","ANIMAL FACT","Dolphins use signature whistles that work a bit like names."],
+["🦇","ANIMAL FACT","Bats are the only mammals capable of true powered flight."],
+["🐙","ANIMAL FACT","Octopuses can squeeze through surprisingly tiny openings if their beak can fit."],
+["🦋","ANIMAL FACT","Butterflies taste with sensors on their feet."],
+["🦒","ANIMAL FACT","A giraffe's tongue can be around half a metre long."],
+["🐊","ANIMAL FACT","Crocodiles have been around for a very, very long time."],
+["🦜","ANIMAL FACT","Some parrots can copy sounds they hear around them."],
+["🦖","DINOSAUR FACT","Tyrannosaurus rex lived closer in time to humans than to Stegosaurus."],
+["🦕","DINOSAUR FACT","Some dinosaurs were smaller than a modern chicken."],
+["🥚","DINOSAUR FACT","Birds are living descendants of a group of dinosaurs."],
+["🦖","DINOSAUR FACT","Some dinosaurs had feathers."],
+["🦴","DINOSAUR FACT","The word dinosaur means 'terrible lizard'."],
+["🦕","DINOSAUR FACT","Some long-necked dinosaurs had extremely long tails."],
+["🦖","DINOSAUR FACT","Not every dinosaur was enormous."],
+["🥚","DINOSAUR FACT","Dinosaur eggs came in many shapes and sizes."],
+["🦖","DINOSAUR FACT","T. rex had huge teeth built for biting."],
+["🦕","DINOSAUR FACT","Some dinosaurs walked on two legs while others walked on four."],
+["🌞","SPACE FACT","The Sun contains almost all of the mass in our solar system."],
+["🌙","SPACE FACT","The Moon is slowly moving farther away from Earth."],
+["🪐","SPACE FACT","Saturn is less dense than water."],
+["🌍","SPACE FACT","Earth is the only planet currently known to have life."],
+["⭐","SPACE FACT","A day on Venus is longer than a year on Venus."],
+["🔴","SPACE FACT","Mars has the largest volcano known in our solar system."],
+["🌌","SPACE FACT","There are enormous numbers of stars in the universe."],
+["☄️","SPACE FACT","Comets can develop glowing tails when they get near the Sun."],
+["🛰️","SPACE FACT","Humans have sent spacecraft far beyond the planets."],
+["🌕","SPACE FACT","The same side of the Moon generally faces Earth."],
+["🪐","SPACE FACT","Jupiter is the largest planet in our solar system."],
+["🌍","SPACE FACT","Earth spins once roughly every 24 hours."],
+["🌙","SPACE FACT","Moonlight is actually reflected sunlight."],
+["☀️","SPACE FACT","Sunlight takes about eight minutes to reach Earth."],
+["🚀","SPACE FACT","Astronauts can grow a little taller in space because their spines stretch."],
+["🧠","BODY FACT","Your brain uses a lot of energy even when you are resting."],
+["❤️","BODY FACT","Your heart beats tens of thousands of times every day."],
+["👂","BODY FACT","Your ears help you balance as well as hear."],
+["👃","BODY FACT","Your nose can detect an enormous variety of smells."],
+["🦴","BODY FACT","Babies are born with more bones than adults have."],
+["👀","BODY FACT","Your eyes can make tiny movements even when you are staring at something."],
+["🦷","BODY FACT","Tooth enamel is the hardest substance in the human body."],
+["👅","BODY FACT","Your tongue helps you taste, swallow and speak."],
+["💪","BODY FACT","Your body contains hundreds of muscles."],
+["🩸","BODY FACT","Blood travels through a huge network of blood vessels."],
+["🌎","EARTH FACT","Earth is mostly covered by ocean."],
+["🌋","EARTH FACT","Volcanoes can create new land."],
+["🌈","EARTH FACT","A rainbow is caused by light interacting with water droplets."],
+["⚡","EARTH FACT","Lightning can heat the air around it extremely quickly."],
+["❄️","EARTH FACT","Snowflakes form with six-sided symmetry."],
+["🌊","EARTH FACT","Ocean tides are strongly influenced by the Moon."],
+["🏔️","EARTH FACT","Mountains can continue changing long after they form."],
+["🌪️","EARTH FACT","A tornado is a rotating column of air."],
+["🌵","EARTH FACT","Some desert plants can survive long periods with very little rain."],
+["🌳","EARTH FACT","Trees move water from their roots toward their leaves."],
+["🍯","FOOD FACT","Honey can remain edible for a very long time when stored properly."],
+["🥕","FOOD FACT","Carrots naturally come in several colours, including purple."],
+["🍌","FOOD FACT","Bananas are botanically berries, while strawberries are not true berries."],
+["🍍","FOOD FACT","Pineapples are made from many small fruits fused together."],
+["🥔","FOOD FACT","Potatoes can be used to make electricity in simple experiments."],
+["🍿","FOOD FACT","Popcorn pops because water inside the kernel turns into steam."],
+["🥚","FOOD FACT","Eggshells have tiny pores."],
+["🍫","FOOD FACT","Chocolate comes from the seeds of cacao fruit."],
+["🧀","FOOD FACT","Cheese is made from milk using different cultures and processes."],
+["🥒","FOOD FACT","Cucumbers are mostly water."],
+["🍉","FOOD FACT","Watermelons are related to cucumbers and pumpkins."],
+["🍓","FOOD FACT","Strawberries have their seeds on the outside."],
+["🌽","FOOD FACT","Corn kernels are individual seeds."],
+["🍞","FOOD FACT","Yeast makes bread rise by producing carbon dioxide."],
+["🍋","FOOD FACT","Lemons contain citric acid, which gives them their sour taste."],
+["🇨🇦","CANADA FACT","Canada has ten provinces and three territories."],
+["🇨🇦","CANADA FACT","Canada has the world's longest coastline."],
+["🦫","CANADA FACT","The beaver is Canada's official animal emblem."],
+["🍁","CANADA FACT","The maple leaf has been a major Canadian symbol for a very long time."],
+["🌊","CANADA FACT","The Bay of Fundy is famous for having very large tides."],
+["🏒","CANADA FACT","Hockey is one of Canada's official national sports."],
+["🗺️","CANADA FACT","Canada is the second-largest country in the world by total area."],
+["🦌","CANADA FACT","Canada is home to caribou, moose, polar bears and many other northern animals."],
+["🏔️","CANADA FACT","The Canadian Rockies contain some spectacular mountain ranges."],
+["🌲","CANADA FACT","Canada has enormous areas of boreal forest."],
+["🤯","WEIRD FACT","Wombat poop is cube-shaped."],
+["👀","WEIRD FACT","A cloud can weigh an enormous amount even though it looks fluffy."],
+["🧊","WEIRD FACT","Hot water can sometimes freeze faster than cold water under particular conditions."],
+["🎈","WEIRD FACT","Helium makes voices sound higher because sound travels differently through it."],
+["🦷","WEIRD FACT","A sneeze can move air very quickly."],
+["🧲","WEIRD FACT","Magnets can attract some metals without touching them."],
+["🪶","WEIRD FACT","A feather and a hammer fall together in a vacuum."],
+["🧼","WEIRD FACT","Soap works because its molecules can interact with both water and oils."],
+["👂","WEIRD FACT","You can hear sounds made by your own body that other people usually cannot."],
+["🕷️","WEIRD FACT","Spiders are not insects; they are arachnids."],
+["📚","EVERYDAY FACT","A standard pencil can write thousands of words."],
+["🧼","EVERYDAY FACT","Washing with soap helps remove oils and germs from your skin."],
+["📱","EVERYDAY FACT","A smartphone contains many tiny electronic components."],
+["🔍","EVERYDAY FACT","Magnifying glasses work by bending light."],
+["🪞","EVERYDAY FACT","Mirrors reflect light into your eyes."],
+["✏️","EVERYDAY FACT","Pencil 'lead' is actually graphite, not lead metal."],
+["🧲","EVERYDAY FACT","Earth itself acts somewhat like a giant magnet."],
+["🌡️","EVERYDAY FACT","Thermometers measure temperature rather than heat itself."],
+["💡","EVERYDAY FACT","LED bulbs use semiconductors to produce light."],
+["🧊","EVERYDAY FACT","Ice floats because solid water is less dense than liquid water."],
+["🏛️","HISTORY FACT","Ancient Egyptians used papyrus as a writing material."],
+["🏛️","HISTORY FACT","The Great Pyramid of Giza is thousands of years old."],
+["🧱","HISTORY FACT","Romans built roads that lasted for centuries."],
+["⚔️","HISTORY FACT","Medieval castles often had very thick defensive walls."],
+["🧭","HISTORY FACT","Compasses helped sailors navigate long before GPS existed."],
+["🖨️","HISTORY FACT","The printing press helped books spread much more widely in Europe."],
+["📜","HISTORY FACT","People have been writing records for thousands of years."],
+["🗿","HISTORY FACT","Stone monuments were built by many ancient cultures around the world."],
+["🚂","HISTORY FACT","Railways transformed travel and transportation during the Industrial Revolution."],
+["📷","HISTORY FACT","Early photographs required much longer exposures than modern photos."]
+];
+
+const intros = [
+  "🤯 Wait... did you know?",
+  "👀 Your brain needed to know this:",
+  "🚨 IMPORTANT USELESS KNOWLEDGE:",
+  "🧠 Today's brain snack:",
+  "😳 This is actually real:",
+  "🎉 Random fact attack!",
+  "🐙 The universe has some explaining to do:",
+  "📢 Tell someone this immediately:",
+  "✨ Weird but wonderful:",
+  "🏆 Congratulations! You know this now:"
+];
+
+let deck = [];
+for (const [emoji, category, fact] of facts) {
+  for (const intro of intros) {
+    deck.push({emoji, category, text: intro + "<br>" + fact});
+  }
+}
+
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+}
+shuffle(deck);
+
+let index = 0;
+const stickyColors = ["#fff7a8","#ffd9e8","#d9f5ff","#dff7d8","#eadcff","#ffe2bd"];
+
+function setStickyColor(){
+  document.getElementById("app").style.background =
+    stickyColors[Math.floor(Math.random()*stickyColors.length)];
+}
+
+function showFact(){
+  const item = deck[index];
+  setStickyColor();
+  document.getElementById("emoji").textContent = item.emoji;
+  document.getElementById("label").textContent = item.category;
+  document.getElementById("fact").innerHTML = item.text;
+  index++;
+  if(index >= deck.length){ shuffle(deck); index=0; }
+}
+showFact();
+setInterval(showFact, 15*60*1000);
+</script>
+</body>
+</html>
